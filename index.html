@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERC1155</title>
+    <script src="https://unpkg.com/@metamask/legacy-web3@latest/dist/metamask.web3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+   
+
+</head>
+    <div>
+        <p></p>
+        <button class="enableEthereumButton">Enable Ethereum</button>
+        <h2>Account: <span class="showAccount"></span></h2>
+        <label>NFT Id </label><input type="number" name="nftId">
+        <br>
+        <label>Amount </label><input type="number" name="amount">
+        <br>
+        <button onclick ="newMint()">Mint an NFT</button> 
+    </div>
+    <script type="text/javascript">
+        // 1. Connect metamask to our site. Get the users's address and
+
+        var account = null;
+        var contract = null;
+        const ABI = [
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "previousOwner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "OwnershipTransferred",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "renounceOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+]
+        const ADDRESS = "0xbD846A6a79A673803D044d7754cDC53bEeac11Fe";
+    
+        const ethereumButton = document.querySelector('.enableEthereumButton');
+        const showAccount = document.querySelector('.showAccount');
+
+        ethereumButton.addEventListener('click', () => {
+         getAccount();
+        });
+
+        contract =  web3.eth.contract(ABI,ADDRESS);
+
+    async function newMint() {
+            var nftId = Number(document.querySelector("[name=nftId]").value);
+            var amount= Number(document.querySelector("[name=amount]").value);
+            console.log(contract);
+           // contract.methods.mint(account,nftId,amount,"0x00").send({from:account, value: ""})
+        }
+
+
+    async function getAccount() {
+        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        const account = accounts[0];
+        showAccount.innerHTML = account;
+}
+
+   
+
+    </script>
+<body>
+    
+</body>
+</html>
